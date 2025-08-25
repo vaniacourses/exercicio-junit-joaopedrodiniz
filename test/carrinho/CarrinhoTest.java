@@ -40,4 +40,31 @@ public class CarrinhoTest {
         assertEquals(1, car.getQtdeItems());
     }
 
+    @DisplayName("Classe para teste de valor total")
+    @Test
+    public void testValorTotal(){
+        car.addItem(produto);
+        car.addItem(produto2);
+        var valorTotal = car.getValorTotal();
+        assertTrue(valorTotal == 549);
+    }
+
+    @DisplayName("Classe para teste de quantidade de itens")
+    @Test 
+    public void testQtdeItems() {
+        car.addItem(produto);
+        car.addItem(produto2);
+        var quantidade = car.getQtdeItems();
+        assertTrue(quantidade == 2);
+    }
+
+    @DisplayName("Classe para teste de esvaziar carrinho")
+    @Test 
+    public void testEsvazia() {
+        car.addItem(produto);
+        car.addItem(produto2);
+        car.esvazia();
+        assertEquals(0, car.getQtdeItems());
+    }
+
 }
