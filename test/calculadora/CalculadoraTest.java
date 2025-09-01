@@ -1,90 +1,139 @@
 package calculadora;
 
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("Classe para teste da calculadora")
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("Classe de testes unitários para Calculadora")
 public class CalculadoraTest {
-	
-	private Calculadora calc;
-	
-	@BeforeEach
-	public void inicializa() {
-		calc = new Calculadora();
-	}
-	
-	@DisplayName("Testa a soma de dois n�meros")
-	@Test
-	public void testSomaDoisNumeros() {
-		int soma = calc.soma(4, 5);		
-		Assertions.assertEquals(9, soma);		
-	}
-	
 
-	@Test
-	public void testDivisaoDoisNumeros() {
-		int divisao = calc.divisao(8, 4);
-		assertTrue(divisao == 2);
-	}
+    private Calculadora calc;
 
-	
-	@Test
-	public void testDivisaoPorZero() {
-		try {
-			int divisao = calc.divisao(8, 0);
-			fail("Exce��o n�o lan�ada");
-		}catch (ArithmeticException e) {
-			assertEquals("/ by zero", e.getMessage());
-		}		
-	}
-	
-	@Test
-	public void testDivisaoPorZeroComAssertThrows() {
-		assertThrows(ArithmeticException.class,
-				() -> calc.divisao(8, 0));
-	}
+    @BeforeEach
+    public void inicializa() {
+        calc = new Calculadora();
+    }
 
-	@Test
-	public void testSubtracao() {
-		int subtracao = calc.subtracao(8, 3);
-		assertTrue(subtracao == 5);
-	}
+    // -------------------- soma --------------------
+    @Test
+    @DisplayName("Soma de dois números positivos")
+    public void testSomaPositivos() {
+        assertEquals(9, calc.soma(4, 5));
+    }
 
-	@Test
-	public void testMultiplicacaoPorZero() {
-		int multiplicacao = calc.multiplicacao(20, 0);
-		assertTrue(multiplicacao == 0);
-	}
+    @Test
+    @DisplayName("Soma envolvendo número negativo")
+    public void testSomaComNegativo() {
+        assertEquals(1, calc.soma(5, -4));
+    }
 
-	@Test
-	public void testNumPositivo(){
-		boolean resposta = calc.ehPositivo(-50);
-		assertFalse(resposta);
-	}
+    @Test
+    @DisplayName("Soma com zero deve retornar o próprio número")
+    public void testSomaComZero() {
+        assertEquals(7, calc.soma(7, 0));
+    }
 
-	@Test
-	public void testComparaNumeros() {
-		int a = 2;
-		int b = 20;
+    // -------------------- subtração --------------------
+    @Test
+    @DisplayName("Subtração resultando em positivo")
+    public void testSubtracaoPositiva() {
+        assertEquals(5, calc.subtracao(8, 3));
+    }
 
-		int comparacao = calc.compara(2, 20);
-		assertTrue(comparacao == -1);
-	}
+    @Test
+    @DisplayName("Subtração resultando em negativo")
+    public void testSubtracaoNegativa() {
+        assertEquals(-2, calc.subtracao(3, 5));
+    }
 
-	@Test
-	public void testSomatoria(){
-		int n = 2;
-		int respostaSomatoria = calc.somatoria(n);
-		assertTrue(respostaSomatoria == 3);
+    // -------------------- multiplicação --------------------
+    @Test
+    @DisplayName("Multiplicação de dois números positivos")
+    public void testMultiplicacaoPositivos() {
+        assertEquals(20, calc.multiplicacao(4, 5));
+    }
 
-	}
+    @Test
+    @DisplayName("Multiplicação por zero")
+    public void testMultiplicacaoPorZero() {
+        assertEquals(0, calc.multiplicacao(20, 0));
+    }
+
+    @Test
+    @DisplayName("Multiplicação por número negativo")
+    public void testMultiplicacaoComNegativo() {
+        assertEquals(-15, calc.multiplicacao(3, -5));
+    }
+
+    // -------------------- divisão --------------------
+    @Test
+    @DisplayName("Divisão exata de dois números")
+    public void testDivisao() {
+        assertEquals(2, calc.divisao(8, 4));
+    }
+
+    @Test
+    @DisplayName("Divisão por zero deve lançar exceção")
+    public void testDivisaoPorZero() {
+        assertThrows(ArithmeticException.class, () -> calc.divisao(8, 0));
+    }
+
+    // -------------------- somatória --------------------
+    @Test
+    @DisplayName("Somatória de número positivo")
+    public void testSomatoriaPositiva() {
+        assertEquals(3, calc.somatoria(2)); // 2+1+0
+    }
+
+    @Test
+    @DisplayName("Somatória de zero deve retornar 0")
+    public void testSomatoriaZero() {
+        assertEquals(0, calc.somatoria(0));
+    }
+
+    @Test
+    @DisplayName("Somatória de número negativo deve retornar 0")
+    public void testSomatoriaNegativa() {
+        assertEquals(0, calc.somatoria(-5));
+    }
+
+    // -------------------- ehPositivo --------------------
+    @Test
+    @DisplayName("Número positivo deve retornar true")
+    public void testEhPositivoComNumeroPositivo() {
+        assertTrue(calc.ehPositivo(10));
+    }
+
+    @Test
+    @DisplayName("Zero deve ser considerado positivo")
+    public void testEhPositivoComZero() {
+        assertTrue(calc.ehPositivo(0));
+    }
+
+    @Test
+    @DisplayName("Número negativo deve retornar false")
+    public void testEhPositivoComNumeroNegativo() {
+        assertFalse(calc.ehPositivo(-50));
+    }
+
+    // -------------------- compara --------------------
+    @Test
+    @DisplayName("Compara quando os números são iguais")
+    public void testComparaIguais() {
+        assertEquals(0, calc.compara(5, 5));
+    }
+
+    @Test
+    @DisplayName("Compara quando o primeiro é maior")
+    public void testComparaMaior() {
+        assertEquals(1, calc.compara(10, 5));
+    }
+
+    @Test
+    @DisplayName("Compara quando o primeiro é menor")
+    public void testComparaMenor() {
+        assertEquals(-1, calc.compara(2, 20));
+    }
 }
